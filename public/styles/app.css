@@ -1,3 +1,18 @@
+body{
+    /* background-image: url('https://previews.123rf.com/images/topform8/topform81607/topform8160700014/59589395-viajes-fondo-transparente-con-iconos-en-estilo-gr%C3%A1fico.jpg'); */
+    font-weight: bold;
+    background-color: whitesmoke;
+}
 .dark{
     background-color: black;
+    border: solid black 2px;
+}
+.dark:hover{
+    background-color: grey;
+    border: solid black 2px;
+}
+.myCard{
+    background-color: lightcoral;
+    border: solid 2px lightcoral;
+    box-shadow: 0 0 15px lightcoral;
 }
