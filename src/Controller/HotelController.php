@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Hotel;
+use App\Entity\Ventajas;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -202,6 +203,103 @@ class HotelController extends AbstractController {
         $hotel19 -> setPrecio(65);
         $hotel19 -> setValoracion(7.7);
 
+        $ventaja1 = new Ventajas();
+        $ventaja1 -> setNombre('Piscina');
+
+        $ventaja2 = new Ventajas();
+        $ventaja2 -> setNombre('Playa cerca');
+
+        $ventaja3 = new Ventajas();
+        $ventaja3 -> setNombre('Gimnasio');
+
+        $ventaja4 = new Ventajas();
+        $ventaja4 -> setNombre('Parking gratuito');
+
+        $ventaja5 = new Ventajas();
+        $ventaja5 -> setNombre('Wifi alta velocidad');
+
+        $ventaja6 = new Ventajas();
+        $ventaja6 -> setNombre('Restaurante');
+
+        $ventaja7 = new Ventajas();
+        $ventaja7 -> setNombre('Cocina individual');
+
+        $ventaja8 = new Ventajas();
+        $ventaja8 -> setNombre('Desayuno gratis');
+
+        $ventaja9 = new Ventajas();
+        $ventaja9 -> setNombre('SPA');
+
+        $hotel1 -> addVentaja($ventaja5);
+        $hotel1 -> addVentaja($ventaja8);
+        $hotel1 -> addVentaja($ventaja4);
+
+        $hotel2 -> addVentaja($ventaja5);
+
+        $hotel3 -> addVentaja($ventaja1);
+        $hotel3 -> addVentaja($ventaja5);
+        $hotel3 -> addVentaja($ventaja3);
+
+        $hotel4 -> addVentaja($ventaja5);
+        $hotel4 -> addVentaja($ventaja6);
+        $hotel4 -> addVentaja($ventaja4);
+
+        $hotel5 -> addVentaja($ventaja5);
+
+        $hotel6 -> addVentaja($ventaja5);
+        $hotel6 -> addVentaja($ventaja7);
+
+        $hotel7 -> addVentaja($ventaja5);
+        $hotel7 -> addVentaja($ventaja9);
+        $hotel7 -> addVentaja($ventaja1);
+        $hotel7 -> addVentaja($ventaja4);
+
+        $hotel8 -> addVentaja($ventaja5);
+        $hotel8 -> addVentaja($ventaja2);
+        $hotel8 -> addVentaja($ventaja1);
+
+        $hotel9 -> addVentaja($ventaja5);
+        $hotel9 -> addVentaja($ventaja1);
+        $hotel9 -> addVentaja($ventaja8);
+        $hotel9 -> addVentaja($ventaja4);
+
+        $hotel10 -> addVentaja($ventaja5);
+        $hotel10 -> addVentaja($ventaja1);
+        $hotel10 -> addVentaja($ventaja2);
+
+        $hotel11 -> addVentaja($ventaja5);
+        $hotel11 -> addVentaja($ventaja6);
+
+        $hotel12 -> addVentaja($ventaja5);
+
+        $hotel13 -> addVentaja($ventaja5);
+        $hotel13 -> addVentaja($ventaja4);
+
+        $hotel14 -> addVentaja($ventaja5);
+        $hotel14 -> addVentaja($ventaja4);
+        $hotel14 -> addVentaja($ventaja3);
+        $hotel14 -> addVentaja($ventaja7);
+
+        $hotel15 -> addVentaja($ventaja5);
+        $hotel15 -> addVentaja($ventaja2);
+        $hotel15 -> addVentaja($ventaja1);
+
+        $hotel16 -> addVentaja($ventaja5);
+
+        $hotel17 -> addVentaja($ventaja5);
+        $hotel17 -> addVentaja($ventaja8);
+        $hotel17 -> addVentaja($ventaja9);
+        $hotel17 -> addVentaja($ventaja3);
+        $hotel17 -> addVentaja($ventaja1);
+
+        $hotel18 -> addVentaja($ventaja5);
+        $hotel18 -> addVentaja($ventaja2);
+
+        $hotel19 -> addVentaja($ventaja5);
+        $hotel19 -> addVentaja($ventaja1);
+
+
+
         $doctrine->persist($hotel1);
         $doctrine->persist($hotel2);
         $doctrine->persist($hotel3);
@@ -221,6 +319,16 @@ class HotelController extends AbstractController {
         $doctrine->persist($hotel17);
         $doctrine->persist($hotel18);
         $doctrine->persist($hotel19);
+
+        $doctrine->persist($ventaja1);
+        $doctrine->persist($ventaja2);
+        $doctrine->persist($ventaja3);
+        $doctrine->persist($ventaja4);
+        $doctrine->persist($ventaja5);
+        $doctrine->persist($ventaja6);
+        $doctrine->persist($ventaja7);
+        $doctrine->persist($ventaja8);
+        $doctrine->persist($ventaja9);
 
         $doctrine->flush();
         return new Response("Hoteles insertados correctamente");

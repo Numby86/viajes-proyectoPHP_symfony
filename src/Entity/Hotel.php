@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HotelRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HotelRepository::class)]
@@ -33,6 +35,14 @@ class Hotel
 
     #[ORM\Column]
     private ?float $valoracion = null;
+
+    #[ORM\ManyToMany(targetEntity: Ventajas::class, inversedBy: 'hoteles')]
+    private Collection $ventajas;
+
+    public function __construct()
+    {
+        $this->ventajas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +129,30 @@ class Hotel
     public function setValoracion(float $valoracion): self
     {
         $this->valoracion = $valoracion;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ventajas>
+     */
+    public function getVentajas(): Collection
+    {
+        return $this->ventajas;
+    }
+
+    public function addVentaja(Ventajas $ventaja): self
+    {
+        if (!$this->ventajas->contains($ventaja)) {
+            $this->ventajas->add($ventaja);
+        }
+
+        return $this;
+    }
+
+    public function removeVentaja(Ventajas $ventaja): self
+    {
+        $this->ventajas->removeElement($ventaja);
 
         return $this;
     }

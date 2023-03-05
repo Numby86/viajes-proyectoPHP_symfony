@@ -6,7 +6,7 @@
 
 {% block contenido %}
 
-            <div class="container">
+            <div class="container bigCard">
                 <div class="row">
                     <div class="col"><h2>{{ hotel.nombre }} </h2></div>
                 </div>
@@ -22,7 +22,9 @@
                      <div class="col">Puntuación: {{ hotel.valoracion }}/10</div>
                      <div class="row">
                             <ul>
-                               {# DEBILIDADES #}
+                            {% for ventaja in hotel.ventajas %}
+                               <li class='extra'>{{ ventaja.nombre }}</li>
+                            {% endfor %}
                             </ul>
                         </div>
                     </div>
