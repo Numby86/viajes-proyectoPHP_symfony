@@ -7,6 +7,12 @@
 {% block contenido %}
 
 <h2>Listado de Hoteles </h2>
+<select class="selectProv">
+    <option value="">Seleccione provincia...</option>
+    {% for hotel in hoteles %}
+        <option placeholder="Seleccione provincia" value="">{{ hotel.provincia }}</option>
+    {% endfor %}
+</select>
     <div class="row row-cols-1 row-cols-md-2">
         {% for hotel in hoteles %}
             <div class="col mb-4">

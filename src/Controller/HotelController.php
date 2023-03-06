@@ -11,6 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HotelController extends AbstractController {
 
+    #[Route("/inicio", name:"inicio")]
+    public function inicio(){
+
+        return $this -> render("hoteles/inicio.html.twig");
+    }
+
     #[Route("/hotel/{id}", name:"detalleHotel")]
     public function showHotel(EntityManagerInterface $doctrine, $id){
 
@@ -20,13 +26,19 @@ class HotelController extends AbstractController {
         return $this -> render("hoteles/showHotel.html.twig", ["hotel" => $hotel]);
     }
 
-    #[Route("/list/hoteles", name:"listaHoteles")]
+    #[Route("/hoteles", name:"listaHoteles")]
     public function listHoteles(EntityManagerInterface $doctrine){
 
         $repository = $doctrine->getRepository(Hotel::class);
         $hoteles = $repository->findAll();
 
     return $this -> render('hoteles/listHoteles.html.twig', ['hoteles' => $hoteles]);
+    }
+
+    #[Route("/createHotel", name:"createHotel")]
+    public function crearHotel(){
+
+        return $this -> render("hoteles/crearHotel.html.twig");
     }
 
     #[Route("/create/hotel")]

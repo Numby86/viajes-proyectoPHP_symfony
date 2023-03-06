@@ -1,7 +1,12 @@
 body{
-    /* background-image: url('https://previews.123rf.com/images/topform8/topform81607/topform8160700014/59589395-viajes-fondo-transparente-con-iconos-en-estilo-gr%C3%A1fico.jpg'); */
+    //background: url('https://www.enroma.com/wp-content/uploads/2017/04/Coliseo-de-noche-scaled.webp') 
+    //no-repeat center center fixed;
+    background-position: center;
+    background-size: cover;
+    object-fit: cover;
     font-weight: bold;
-    background-color: whitesmoke;
+    color: whitesmoke;
+    background-color: rgb(0, 0, 55);
 }
 .dark{
     background-color: black;
@@ -14,7 +19,8 @@ body{
 .myCard{
     background-color: lightseagreen;
     border: solid 2px lightseagreen;
-    box-shadow: 0 0 15px lightseagreen;
+    min-height: 400px;
+    //box-shadow: 0 0 15px lightseagreen;
 }
 .extra{
     border: 3px solid green;
@@ -29,9 +35,37 @@ body{
     padding: 2px;
 }
 .bigCard{
+    min-height: 500px;
     margin-top: 20px;
     border: 2px solid black;
     border-radius: 15px;
     background-color: lightseagreen;
     padding: 20px;
+    & img{
+        border: 1px solid black;
+        width: 480px;
+        height: 319.5px;
+    }
+}
+.newNav{
+    background-color: lightseagreen !important;
+}
+.divSelect{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.selectProv{
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: lightseagreen;
+    color: whitesmoke;
+    & option:hover {
+        background-color: black;
+    }
 }
