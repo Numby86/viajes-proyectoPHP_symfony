@@ -1,0 +1,27 @@
+{% extends 'hoteles/baseHotel.html.twig' %}
+    
+    {% block stylesheets %}
+        {{ parent() }}
+        
+    {% endblock %}
+    
+    {% block contenido %}
+
+        <div class="row row-cols-1 row-cols-md-2">
+            {% for hotel in hoteles %}
+                {# {% if hotel.provincia == provincia %} #}
+                <div class="col mb-4">
+                    <div class="card  myCard" style="width: 18rem;">
+                        <img width='320px' height='213px' src="{{ hotel.imagen }}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ hotel.nombre }}</h5>
+                            <p class="card-text">{{ hotel.precio }}€</p>
+                            <a href="{{ path('detalleHotel', {id:hotel.id}) }}" class="btn btn-primary dark">Más Info</a>
+                        </div>
+                    </div>
+                </div>
+            {# {% endif %} #}
+            {% endfor %}
+        </div>
+    
+    {% endblock %}

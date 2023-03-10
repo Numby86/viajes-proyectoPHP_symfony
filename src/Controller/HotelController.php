@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Hotel;
 use App\Entity\Ventajas;
+use App\Form\HotelType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class HotelController extends AbstractController {
@@ -26,19 +28,24 @@ class HotelController extends AbstractController {
         return $this -> render("hoteles/showHotel.html.twig", ["hotel" => $hotel]);
     }
 
+    #[Route("/provinciahotel/{provincia}", name:"hotelProvincia")]
+    
+    public function provHoteles(EntityManagerInterface $doctrine, $provincia){
+
+        $repository = $doctrine->getRepository(Hotel::class);
+        $provincia = $repository->find($provincia);
+
+    return $this -> render('hoteles/provHotel.html.twig', ['provincia' => $provincia]);
+    }
+
     #[Route("/hoteles", name:"listaHoteles")]
+    
     public function listHoteles(EntityManagerInterface $doctrine){
 
         $repository = $doctrine->getRepository(Hotel::class);
         $hoteles = $repository->findAll();
 
     return $this -> render('hoteles/listHoteles.html.twig', ['hoteles' => $hoteles]);
-    }
-
-    #[Route("/createHotel", name:"createHotel")]
-    public function crearHotel(){
-
-        return $this -> render("hoteles/crearHotel.html.twig");
     }
 
     #[Route("/create/hotel")]
@@ -344,8 +351,26 @@ class HotelController extends AbstractController {
 
         $doctrine->flush();
         return new Response("Hoteles insertados correctamente");
- 
+    }
 
+    #[Route("/new/hotel", name:"newHotel")]
+    
+    public function newHotel(Request $request, EntityManagerInterface $doctrine){
+
+        $form = $this-> createForm(HotelType::class);
+        $form-> handleRequest($request);
+        if ($form-> isSubmitted() && $form-> isValid()) {
+            $hotel = $form -> getData();
+            $doctrine -> persist($hotel);
+            $doctrine->flush();
+            $this -> addFlash('success', 'Hotel creado correctamente');
+            return $this -> redirectToRoute('listaHoteles');
+        }
+
+        return $this-> renderForm("hoteles/crearHotel.html.twig", 
+        [
+            'hotelForm' => $form
+        ]);
     }
 
 }
