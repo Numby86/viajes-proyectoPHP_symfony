@@ -11,6 +11,8 @@ body {
 .dark {
   background-color: black;
   border: solid black 2px;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .dark:hover {

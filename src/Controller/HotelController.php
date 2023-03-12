@@ -5,19 +5,33 @@ namespace App\Controller;
 use App\Entity\Hotel;
 use App\Entity\Ventajas;
 use App\Form\HotelType;
+use App\Form\SearchType;
+use App\Manager\HotelManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class HotelController extends AbstractController {
 
     #[Route("/inicio", name:"inicio")]
-    public function inicio(){
+    public function inicio(EntityManagerInterface $doctrine, Request $request){
 
-        return $this -> render("hoteles/inicio.html.twig");
+        $form = $this-> createForm(SearchType::class);
+        $form-> handleRequest($request);
+        if ($form-> isSubmitted() && $form-> isValid()) {
+            $hotel = $form -> get('hotel')->getData();
+            return $this -> redirectToRoute('detalleHotel', ['id'=>$hotel->getId()]);
+        }
+
+        $repository = $doctrine->getRepository(Hotel::class);
+        $hoteles = $repository->findAll();
+
+        return $this -> render("hoteles/inicio.html.twig", ['hoteles' => $hoteles, 'hotelSearch'=>$form]);
     }
+
 
     #[Route("/hotel/{id}", name:"detalleHotel")]
     public function showHotel(EntityManagerInterface $doctrine, $id){
@@ -48,6 +62,7 @@ class HotelController extends AbstractController {
     return $this -> render('hoteles/listHoteles.html.twig', ['hoteles' => $hoteles]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route("/create/hotel")]
     public function createHotel(EntityManagerInterface $doctrine){
 
@@ -353,11 +368,41 @@ class HotelController extends AbstractController {
         return new Response("Hoteles insertados correctamente");
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route("/new/hotel", name:"newHotel")]
     
-    public function newHotel(Request $request, EntityManagerInterface $doctrine){
+    public function newHotel(Request $request, EntityManagerInterface $doctrine, HotelManager $manager){
 
         $form = $this-> createForm(HotelType::class);
+        $form-> handleRequest($request);
+        if ($form-> isSubmitted() && $form-> isValid()) {
+            $hotel = $form -> getData();
+            $hotelImage = $form ->get('imagenHotel')-> getData();
+            if($hotelImage) {
+                $hoteImagen = $manager -> load($hotelImage, $this->getParameter('kernel.project_dir').'/public/assets/image');
+                $hotel -> setImagen('/assets/image/'.$hoteImagen);
+            }
+            $doctrine -> persist($hotel);
+            $doctrine->flush();
+            $this -> addFlash('success', 'Hotel creado correctamente');
+            return $this -> redirectToRoute('listaHoteles');
+        }
+
+        return $this-> renderForm("hoteles/crearHotel.html.twig", 
+        [
+            'hotelForm' => $form
+        ]);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route("/edit/hotel/{id}", name:"editHotel")]
+    
+    public function editHotel(Request $request, EntityManagerInterface $doctrine, $id){
+
+        $repository = $doctrine->getRepository(Hotel::class);
+        $hotel = $repository->find($id);
+
+        $form = $this-> createForm(HotelType::class, $hotel);
         $form-> handleRequest($request);
         if ($form-> isSubmitted() && $form-> isValid()) {
             $hotel = $form -> getData();
@@ -371,6 +416,17 @@ class HotelController extends AbstractController {
         [
             'hotelForm' => $form
         ]);
+    }
+    #[Route("/delete/hotel/{id}", name:"deleteHotel")]
+    public function deleteHotel(EntityManagerInterface $doctrine, $id){
+
+        $repository = $doctrine->getRepository(Hotel::class);
+        $hotel = $repository->find($id);
+        $doctrine -> remove($hotel);
+        $doctrine->flush();
+        $this -> addFlash('success', 'El Hotel se elimino correctamente');
+
+        return $this -> redirectToRoute("listaHoteles");
     }
 
 }

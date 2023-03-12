@@ -4,7 +4,11 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('/styles/app.css') }}">
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
         <title>{% block title %}Welcome!{% endblock %}</title>
     </head>
@@ -20,8 +24,19 @@
                         <a class="nav-link active" href="{{ path('inicio') }}">Inicio <span class="sr-only">(current)</span></a>
                         <a class="nav-link" href="{{ path('listaHoteles') }}">Lista Hoteles</a>
                         <a class="nav-link" href="{{ path('newHotel') }}">Crear Hotel</a>
+                        <a class="nav-link" href="{{ path('createUser') }}">Registrate</a>
+                        {% if not is_granted('ROLE_USER') %}
+                        <a class="btn btn-primary dark" href="{{ path('app_login') }}">Login</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+                        <a class="btn btn-primary dark" href="{{ path('app_logout') }}">logout</a>
+                        {% endif %}
                     </div>
                 </div>
+                {% if is_granted('ROLE_USER') %}
+                    <p class="btn btn-primary dark">{{ app.user.username }}</p>
+                {% endif %}
+          
             </nav>
             {% block contenido %} {% endblock %}
         </div>
