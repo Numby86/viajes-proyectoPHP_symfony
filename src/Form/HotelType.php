@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class HotelType extends AbstractType
 {
@@ -17,7 +18,7 @@ class HotelType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('imagenHotel', FileType::class, ['mapped' => false])
+            ->add('imagenHotel', DropzoneType::class, ['mapped' => false])
             ->add('direccion')
             ->add('ciudad')
             ->add('provincia')
